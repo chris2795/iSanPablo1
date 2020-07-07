@@ -9,6 +9,7 @@ import {
   FlatList,
   Image,
 } from 'react-native';
+
 import img1 from '../assets/slider3.jpg';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -18,7 +19,7 @@ const home = [
     id: 1,
     user: {
       name: 'Christian Velasco',
-      avatar: '',
+      avatar: img1,
     },
     location: 'Brgy. IV-A, San Pablo City',
     title: 'Sampaloc Lake',
@@ -44,17 +45,36 @@ const styles = StyleSheet.create({
   },
   news: {},
   destination: {
-    width: width - (33 * 2),
+    width: width - 33 * 2,
     borderRadius: 12,
     marginHorizontal: 33,
+    paddingHorizontal: 33,
+    paddingVertical: 24,
     padding: 33,
-    backgroundColor: 'pink',
+    overflow: 'visible',
   },
-  destinations: {},
+  destinations: {
+    overflow: 'visible',
+    marginBottom: 50, // add this
+  },
   recommended: {
     padding: 33,
   },
-  avatar: {width: 30, height: 30, borderRadius: 18},
+  avatar: {
+    width: 33,
+    height: 33,
+    borderRadius: 18,
+  },
+  destinationInfo: {
+    position: 'absolute',
+    padding: 24,
+    bottom: -33,
+    right: 33,
+    left: 33,
+    borderRadius: 12,
+    backgroundColor: 'white',
+  
+  },
 });
 class Articles extends Component {
   static navigationOptions = {
@@ -74,7 +94,7 @@ class Articles extends Component {
           <Text style={{fontSize: 18}}>City Government of San Pablo</Text>
         </View>
         <View>
-          <Text>Avatar</Text>
+          <Image source={img1} style={[styles.avatar]} />
           <Text />
         </View>
       </View>
@@ -83,7 +103,9 @@ class Articles extends Component {
 
   renderDestinations = () => {
     return (
-      <View style={[styles.flex, styles.column, styles.destinations]}>
+      
+      <View  style={[styles.flex, styles.column]}>
+
         <FlatList
           horizontal
           pagingEnabled
@@ -93,9 +115,15 @@ class Articles extends Component {
           snapToAlignment="center"
           data={this.props.destinations}
           keyExtractor={(item, index) => `$(item.id)`}
-          renderItem={({item}) => this.renderDestination(item)}
+          renderItem={({item}) => (
+            
+            this.renderDestination(item)
+       
+          )}
         />
+          
       </View>
+  
     );
   };
 
@@ -105,14 +133,21 @@ class Articles extends Component {
         style={[styles.flex, styles.destination]}
         imageStyle={{borderRadius: 12}}
         source={item.previewImage}>
-        <View style={[ styles.row]}>
-          <View>
-            <Image source={{uri: item.user.avatar}} style={[styles.avatar]} />
+        <View style={[styles.row]}>
+          <View style={{flex: 0, alignSelf: 'center'}}>
+            <Image source={item.user.avatar} style={[styles.avatar]} />
           </View>
-          <View style={[styles.flex, styles.column]}>
-            <Text>{item.user.name}</Text>
-            <Text>{item.location}</Text>
+          <View style={[styles.column, {flex: 2, paddingHorizontal: 18}]}>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>
+              {item.user.name}
+            </Text>
+            <Text style={{color: 'white'}}>{item.location}</Text>
           </View>
+        </View>
+        <View style={[styles.destinationInfo, styles.column]}>
+
+          <Text style={{fontWeight: 'bold'}}>{item.title}</Text>
+          <Text>{item.previewDescription}</Text>
         </View>
       </ImageBackground>
     );
@@ -131,6 +166,21 @@ class Articles extends Component {
           <StatusBar backgroundColor="transparent" barStyle="dark-content" />
         </View>
         <View style={[styles.flex, styles.news]}>
+        <View style={{
+        width: 200,
+        height: 200,
+        position:'relative',
+        backgroundColor: 'green',
+      }}>
+        <View style={{
+          position: 'absolute',
+          top: 20,
+      
+          width: 400,
+          height: 100,
+          backgroundColor: 'red',
+        }} />
+      </View>
           {this.renderDestinations()}
           {this.renderRecommended()}
         </View>
