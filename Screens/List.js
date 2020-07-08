@@ -26,10 +26,21 @@ const home = [
     previewDescription: 'Lorem Ispum noelasdsd asdsdlka',
     previewImage: img1,
   },
+  {
+    id: 2,
+    user: {
+      name: 'Christian Velasco',
+      avatar: img1,
+    },
+    location: 'Brgy. IV-A, San Pablo City',
+    title: 'Sampaloc Lake',
+    previewDescription: 'Lorem Ispum noelasdsd asdsdlka',
+    previewImage: img1,
+  },
 ];
 const styles = StyleSheet.create({
   flex: {
-    flex: 1,
+    flex: 2,
   },
   column: {
     flexDirection: 'column',
@@ -39,23 +50,25 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'transparent',
-    paddingHorizontal: 33,
+    paddingHorizontal: 20,
+    marginTop: 20,
     marginBottom: 60,
-    paddingTop: 40,
   },
   news: {},
   destination: {
+    backgroundColor: 'red',
     width: width - 33 * 2,
+    height: width - 33 * 2,
     borderRadius: 12,
     marginHorizontal: 33,
     paddingHorizontal: 33,
     paddingVertical: 24,
     padding: 33,
-    overflow: 'visible',
   },
   destinations: {
-    overflow: 'visible',
-    marginBottom: 50, // add this
+    justifyContent: 'space-between',
+
+
   },
   recommended: {
     padding: 33,
@@ -65,15 +78,32 @@ const styles = StyleSheet.create({
     height: 33,
     borderRadius: 18,
   },
-  destinationInfo: {
-    position: 'absolute',
-    padding: 24,
-    bottom: -33,
-    right: 33,
-    left: 33,
-    borderRadius: 12,
-    backgroundColor: 'white',
-  
+  // destinationInfo: {
+  //   padding: 24,
+  //   position: 'absolute',
+  //   borderRadius: 12,
+  //   backgroundColor: 'white',
+  // },
+  shadow: {
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+  },
+  dots: {
+    width: 12,
+    height: 12,
+    backgroundColor: '#DCE0E9',
+    borderRadius: 7,
+    borderWidth: 3,
+    marginHorizontal: 7,
+    borderColor: 'transparent',
+  },
+  activeDot: {
+    borderColor: '#007BFA',
   },
 });
 class Articles extends Component {
@@ -87,6 +117,7 @@ class Articles extends Component {
           {
             justifyContent: 'space-between',
             alignContent: 'center',
+      
           },
         ]}>
         <View>
@@ -101,11 +132,30 @@ class Articles extends Component {
     ),
   };
 
+  renderDots() {
+    const {destinations} = this.props;
+    return (
+      <View
+        style={[
+          styles.flex,
+          styles.row,
+          {justifyContent: 'center', marginTop: 10},
+        ]}>
+        {destinations.map(item => {
+          return (
+            <View
+              key={`step-${item.id}`}
+              style={[styles.dots, item.id === 1 ? styles.activeDot : null]}
+            />
+          );
+        })}
+      </View>
+    );
+  }
+
   renderDestinations = () => {
     return (
-      
-      <View  style={[styles.flex, styles.column]}>
-
+      <View style={[ styles.column, styles.destinations, styles.shadow]}>
         <FlatList
           horizontal
           pagingEnabled
@@ -115,15 +165,10 @@ class Articles extends Component {
           snapToAlignment="center"
           data={this.props.destinations}
           keyExtractor={(item, index) => `$(item.id)`}
-          renderItem={({item}) => (
-            
-            this.renderDestination(item)
-       
-          )}
+          renderItem={({item}) => this.renderDestination(item)}
         />
-          
+        {this.renderDots()}
       </View>
-  
     );
   };
 
@@ -139,15 +184,10 @@ class Articles extends Component {
           </View>
           <View style={[styles.column, {flex: 2, paddingHorizontal: 18}]}>
             <Text style={{color: 'white', fontWeight: 'bold'}}>
-              {item.user.name}
+              {item.title}
             </Text>
             <Text style={{color: 'white'}}>{item.location}</Text>
           </View>
-        </View>
-        <View style={[styles.destinationInfo, styles.column]}>
-
-          <Text style={{fontWeight: 'bold'}}>{item.title}</Text>
-          <Text>{item.previewDescription}</Text>
         </View>
       </ImageBackground>
     );
@@ -161,30 +201,11 @@ class Articles extends Component {
   };
   render() {
     return (
-      <>
-        <View>
-          <StatusBar backgroundColor="transparent" barStyle="dark-content" />
-        </View>
-        <View style={[styles.flex, styles.news]}>
-        <View style={{
-        width: 200,
-        height: 200,
-        position:'relative',
-        backgroundColor: 'green',
-      }}>
-        <View style={{
-          position: 'absolute',
-          top: 20,
-      
-          width: 400,
-          height: 100,
-          backgroundColor: 'red',
-        }} />
-      </View>
+        <ScrollView contentContainerStyle={[styles.flex, styles.news]}>
           {this.renderDestinations()}
           {this.renderRecommended()}
-        </View>
-      </>
+        </ScrollView>
+    
     );
   }
 }
