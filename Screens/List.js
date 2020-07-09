@@ -15,8 +15,6 @@ import logo2 from '../assets/package.png';
 
 import {ScrollView} from 'react-native-gesture-handler';
 
-
-
 const {width, height} = Dimensions.get('screen');
 
 const home = [
@@ -67,12 +65,12 @@ const iSanPablo = [
     id: 3,
     previewImage: logo2,
   },
- 
+
   {
     id: 4,
     previewImage: logo2,
   },
- 
+
   {
     id: 5,
     previewImage: logo2,
@@ -81,7 +79,6 @@ const iSanPablo = [
     id: 6,
     previewImage: logo2,
   },
- 
 ];
 
 const styles = StyleSheet.create({
@@ -118,7 +115,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   recommendedList: {
-  borderRadius: 12
+    borderRadius: 12,
   },
   recommendation: {
     width: (width - 36 * 2) / 2,
@@ -146,14 +143,14 @@ const styles = StyleSheet.create({
   //   backgroundColor: 'white',
   // },
   shadow: {
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    
+
     elevation: 5,
   },
   dots: {
@@ -271,7 +268,7 @@ class Articles extends Component {
           <Text style={{fontSize: 18}}>Recommended</Text>
           <Text style={{color: '#BCCCD4'}}>More</Text>
         </View>
-        <View style={[styles.column, ]}>
+        <View style={[styles.column]}>
           <FlatList
             horizontal
             pagingEnabled
@@ -290,26 +287,21 @@ class Articles extends Component {
 
   renderRecommendation = item => {
     return (
-      <View style={[ styles.shadow, {  width: (width - 36 * 2) / 2, marginHorizontal: 12, borderRadius: 12 ,backgroundColor: 'white' ,marginVertical: 5 }]}>
-      <View style={{ height: (width - 36\
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        * 2) / 2,   width: (width - 36 * 2) / 2,}}>
+      <View
+        style={[
+          styles.shadow,
+          {
+            width: (width - 36 * 2) / 2,
+            marginHorizontal: 12,
+            borderRadius: 12,
+            backgroundColor: 'white',
+            marginVertical: 5,
+          },
+        ]}>
+        <View
+          style={{height: (width - 36 * 2) / 2, width: (width - 36 * 2) / 2}}>
           <ImageBackground
-          6t666666666666666666666666666666666666666666666666666666666666666`````````````````````  style={[styles.flex, styles.row, styles.recommendationImage]}
+            style={[styles.flex, styles.row, styles.recommendationImage]}
             imageStyle={{
               // borderTopRightRadius: 12,
               // borderTopLeftRadius: 12,
@@ -317,15 +309,23 @@ class Articles extends Component {
               // width: (width - 36* 2) / 2,
               // height: (width - 36 * 2) / 2,
             }}
-            source={item.previewImage}2>
-     
-          </ImageBackground>
-          </View>
-          <View style={[ styles.column, { height: 'auto', width: (width - 36 * 2) / 2, justifyContent: 'space-evenly', }]}>
-          <Text style={{ fontSize: 18, fontWeight: '500', paddingBottom: 8}} >asdasdasd</Text>
-          </View>
-          </View>
-      
+            source={item.previewImage}
+          />
+        </View>
+        <View
+          style={[
+            styles.column,
+            {
+              height: 'auto',
+              width: (width - 36 * 2) / 2,
+              justifyContent: 'space-evenly',
+            },
+          ]}>
+          <Text style={{fontSize: 18, fontWeight: '500', paddingBottom: 8}}>
+            asdasdasd
+          </Text>
+        </View>
+      </View>
     );
   };
 
