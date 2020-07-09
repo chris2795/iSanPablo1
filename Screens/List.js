@@ -37,10 +37,21 @@ const home = [
     previewDescription: 'Lorem Ispum noelasdsd asdsdlka',
     previewImage: img1,
   },
+  {
+    id: 2,
+    user: {
+      name: 'Christian Velasco',
+      avatar: img1,
+    },
+    location: 'Brgy. IV-A, San Pablo City',
+    title: 'Sampaloc Lake',
+    previewDescription: 'Lorem Ispum noelasdsd asdsdlka',
+    previewImage: img1,
+  },
 ];
 const styles = StyleSheet.create({
   flex: {
-    flex: 2,
+    flex: 1,
   },
   column: {
     flexDirection: 'column',
@@ -67,11 +78,17 @@ const styles = StyleSheet.create({
   },
   destinations: {
     justifyContent: 'space-between',
-
-
   },
   recommended: {
     padding: 33,
+  },
+  recommendation: {
+    width: (width - 36 * 2) / 2,
+    height: (width - 36 * 2) / 2,
+    borderRadius: 12,
+    marginHorizontal: 18,
+    // paddingHorizontal: 33,
+    // paddingVertical: 24,
   },
   avatar: {
     width: 33,
@@ -94,11 +111,11 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
   },
   dots: {
-    width: 12,
-    height: 12,
+    width: 11,
+    height: 11,
     backgroundColor: '#DCE0E9',
     borderRadius: 7,
-    borderWidth: 3,
+    borderWidth: 2,
     marginHorizontal: 7,
     borderColor: 'transparent',
   },
@@ -106,6 +123,7 @@ const styles = StyleSheet.create({
     borderColor: '#007BFA',
   },
 });
+
 class Articles extends Component {
   static navigationOptions = {
     header: (
@@ -117,12 +135,11 @@ class Articles extends Component {
           {
             justifyContent: 'space-between',
             alignContent: 'center',
-      
           },
         ]}>
         <View>
           <Text>Republic of the Philippines</Text>
-          <Text style={{fontSize: 18}}>City Government of San Pablo</Text>
+          <Text style={{fontSize: 20}}>City Government of San Pablo</Text>
         </View>
         <View>
           <Image source={img1} style={[styles.avatar]} />
@@ -155,7 +172,7 @@ class Articles extends Component {
 
   renderDestinations = () => {
     return (
-      <View style={[ styles.column, styles.destinations, styles.shadow]}>
+      <View style={[styles.column, styles.destinations, styles.shadow]}>
         <FlatList
           horizontal
           pagingEnabled
@@ -192,20 +209,80 @@ class Articles extends Component {
       </ImageBackground>
     );
   };
+
   renderRecommended = () => {
     return (
       <View style={[styles.flex, styles.column, styles.recommended]}>
-        <Text>Recommended</Text>
+        <View
+          style={[
+            styles.row,
+            {
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              marginBottom: 20,
+            },
+          ]}>
+          <Text style={{fontSize: 18}}>Recommended</Text>
+          <Text style={{color: '#BCCCD4'}}>More</Text>
+        </View>
+        <View style={[styles.column, styles.recommendedList, styles.shadow]}>
+          <FlatList
+            horizontal
+            pagingEnabled
+            scrollEnabled
+            scrollEventThrottle={16}
+            showsHorizontalScrollIndicator={false}
+            snapToAlignment="center"
+            data={this.props.destinations}
+            keyExtractor={(item, index) => `$(item.id)`}
+            renderItem={({item}) => this.renderRecommendation(item)}
+          />
+          {this.renderDots()}
+        </View>
       </View>
     );
   };
+
+  renderRecommendation = item => {
+    return (
+      <View style={[styles.flex, styles.column, styles.recommendation, styles.shadow]}>
+        <View style={styles.flex}>
+          <ImageBackground
+            style={[
+              styles.flex,
+              {
+                borderTopLeftRadius: 12,
+                borderTopRightRadius: 12,
+                width: (width - 36 * 2) / 2,
+              },
+            ]}
+            imageStyle={{
+              borderTopLeftRadius: 12,
+              borderTopRightRadius: 12,
+            }}
+            source={item.previewImage}>
+            <Text>asd</Text>
+          </ImageBackground>
+        </View>
+        <View
+          style={[
+            styles.flex,
+            styles.column,
+            {justifyContent: 'space-evenly'},
+          ]}>
+          <Text>asd</Text>
+          <Text>asd</Text>
+        </View>
+      </View>
+    );
+  };
+
   render() {
     return (
-        <ScrollView contentContainerStyle={[styles.flex, styles.news]}>
-          {this.renderDestinations()}
-          {this.renderRecommended()}
-        </ScrollView>
-    
+      <ScrollView contentContainerStyle={[styles.flex, styles.news]}>
+        {this.renderDestinations()}
+        {this.renderRecommended()}
+      </ScrollView>
     );
   }
 }
