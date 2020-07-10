@@ -8,6 +8,7 @@ import {
   ImageBackground,
   FlatList,
   Image,
+  Animated
 } from 'react-native';
 
 import img1 from '../assets/slider3.jpg';
@@ -56,28 +57,34 @@ const iSanPablo = [
   {
     id: 1,
     previewImage: logo2,
+    previevTitle: 'Business in the City',
   },
   {
     id: 2,
     previewImage: logo2,
+    previevTitle: 'My Taxes',
   },
   {
     id: 3,
     previewImage: logo2,
+    previevTitle: 'My App Online Request',
   },
 
   {
     id: 4,
     previewImage: logo2,
+    previevTitle: 'City Hotlines',
   },
 
   {
     id: 5,
     previewImage: logo2,
+    previevTitle: 'Government Online Services',
   },
   {
     id: 6,
     previewImage: logo2,
+    previevTitle: 'City Employee Corner',
   },
 ];
 
@@ -92,12 +99,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   header: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#FFF',
     paddingHorizontal: 20,
-    marginTop: 20,
-    marginBottom: 60,
+    paddingBottom: 60,
+    paddingTop: 20,
   },
-  news: {},
+
   destination: {
     backgroundColor: 'red',
     width: width - 22 * 2,
@@ -168,6 +175,7 @@ const styles = StyleSheet.create({
 });
 
 class Articles extends Component {
+  scrollX = new Animated.Value(0);
   static navigationOptions = {
     header: (
       <View
@@ -201,9 +209,9 @@ class Articles extends Component {
           styles.row,
           {justifyContent: 'center', marginTop: 10},
         ]}>
-        {destinations.map(item => {
+        {destinations.map((item) => {
           return (
-            <View
+            <Animated.View
               key={`step-${item.id}`}
               style={[styles.dots, item.id === 1 ? styles.activeDot : null]}
             />
@@ -232,7 +240,7 @@ class Articles extends Component {
     );
   };
 
-  renderDestination = item => {
+  renderDestination = (item) => {
     return (
       <ImageBackground
         style={[styles.flex, styles.destination]}
@@ -262,21 +270,24 @@ class Articles extends Component {
             {
               justifyContent: 'space-between',
               alignItems: 'flex-end',
-              marginBottom: 20,
+              marginBottom: 10,
+              marginTop: 20,
             },
           ]}>
-          <Text style={{fontSize: 18}}>Recommended</Text>
-          <Text style={{color: '#BCCCD4'}}>More</Text>
+          <Text style={{fontSize: 24}}>My iSanPablo</Text>
+          {/* <Text style={{color: '#BCCCD4'}}>More</Text> */}
         </View>
         <View style={[styles.column]}>
           <FlatList
             horizontal
             pagingEnabled
             scrollEnabled
+            decelerationRate={0}
             scrollEventThrottle={16}
             showsHorizontalScrollIndicator={false}
             snapToAlignment="center"
             data={this.props.isanpanblo}
+            onScroll-{Animated.event}
             keyExtractor={(item, index) => `$(item.id)`}
             renderItem={({item}) => this.renderRecommendation(item)}
           />
@@ -285,16 +296,15 @@ class Articles extends Component {
     );
   };
 
-  renderRecommendation = item => {
+  renderRecommendation = (item) => {
     return (
       <View
         style={[
-          styles.shadow,
           {
             width: (width - 36 * 2) / 2,
-            marginHorizontal: 12,
+            marginHorizontal: 5,
             borderRadius: 12,
-            backgroundColor: 'white',
+
             marginVertical: 5,
           },
         ]}>
@@ -321,9 +331,19 @@ class Articles extends Component {
               justifyContent: 'space-evenly',
             },
           ]}>
-          <Text style={{fontSize: 18, fontWeight: '500', paddingBottom: 8}}>
-            asdasdasd
-          </Text>
+          <View>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: '800',
+                paddingBottom: 8,
+                alignSelf: 'center',
+                width: (width - 36 * 2) / 2,
+                textAlign: 'center',
+              }}>
+              {item.previevTitle}
+            </Text>
+          </View>
         </View>
       </View>
     );
@@ -331,9 +351,14 @@ class Articles extends Component {
 
   render() {
     return (
-      <ScrollView contentContainerStyle={[styles.flex, styles.news]}>
-        {this.renderDestinations()}
-        {this.renderRecommended()}
+      <ScrollView
+        style={[styles.flex, styles.column, {backgroundColor: '#FFFF'}]}>
+        <StatusBar backgroundColor="#FFFF" barStyle="dark-content" />
+        <View style={[styles.flex, styles.column]}>
+          {this.renderDestinations()}
+          {this.renderRecommended()}
+          {this.renderRecommended()}
+        </View>
       </ScrollView>
     );
   }
