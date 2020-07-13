@@ -11,11 +11,13 @@ import {
   Animated
 } from 'react-native';
 
+
+import * as theme from '../theme'
+import icon from '../assets/new_icon.png';
 import img1 from '../assets/slider3.jpg';
 import logo2 from '../assets/package.png';
-
 import {ScrollView} from 'react-native-gesture-handler';
-
+import Icon from 'react-native-vector-icons';
 const {width, height} = Dimensions.get('screen');
 
 const home = [
@@ -143,11 +145,16 @@ const styles = StyleSheet.create({
     height: 33,
     borderRadius: 18,
   },
+  icon: {
+    width: 33,
+    height: 33,
+ 
+  },
   // destinationInfo: {
   //   padding: 24,
   //   position: 'absolute',
   //   borderRadius: 12,
-  //   backgroundColor: 'white',
+  //   backgroundColor: theme.colors.white,
   // },
   shadow: {
     shadowColor: '#000',
@@ -189,11 +196,12 @@ class Articles extends Component {
           },
         ]}>
         <View>
-          <Text>Republic of the Philippines</Text>
+          <Text style={{ color: theme.colors.caption}}>Republic of the Philippines</Text>
           <Text style={{fontSize: 20}}>City Government of San Pablo</Text>
         </View>
         <View>
-          <Image source={img1} style={[styles.avatar]} />
+          {/* <Image source={icon} style={[styles.icon]} /> */}
+          <Icon size={24} color="blue" name="menu" type="Feather" />
           <Text />
         </View>
       </View>
@@ -202,6 +210,8 @@ class Articles extends Component {
 
   renderDots() {
     const {destinations} = this.props;
+    const dotPosition = Animated.divide(this.scrollX, width)
+
     return (
       <View
         style={[
@@ -209,11 +219,16 @@ class Articles extends Component {
           styles.row,
           {justifyContent: 'center', marginTop: 10},
         ]}>
-        {destinations.map((item) => {
+        {destinations.map((item, index) => {
+          const opacity = dotPosition.interpolate ({
+            inputRange: [index -1, index, index + 1],
+            outputRange: [0, 2, 0],
+            extrapolate: 'clamp'
+          })
           return (
             <Animated.View
               key={`step-${item.id}`}
-              style={[styles.dots, item.id === 1 ? styles.activeDot : null]}
+              style={[styles.dots, styles.activeDot, {  borderWidth: opacity} ]}
             />
           );
         })}
@@ -228,10 +243,12 @@ class Articles extends Component {
           horizontal
           pagingEnabled
           scrollEnabled
+          decelerationRate={0}
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
           snapToAlignment="center"
           data={this.props.destinations}
+          onScroll={Animated.event([{nativeEvent: {contentOffset: {x: this.scrollX}}}])}
           keyExtractor={(item, index) => `$(item.id)`}
           renderItem={({item}) => this.renderDestination(item)}
         />
@@ -251,10 +268,10 @@ class Articles extends Component {
             <Image source={item.user.avatar} style={[styles.avatar]} />
           </View>
           <View style={[styles.column, {flex: 2, paddingHorizontal: 18}]}>
-            <Text style={{color: 'white', fontWeight: 'bold'}}>
+            <Text style={{color: theme.colors.white, fontWeight: 'bold'}}>
               {item.title}
             </Text>
-            <Text style={{color: 'white'}}>{item.location}</Text>
+            <Text style={{color: theme.colors.white}}>{item.location}</Text>
           </View>
         </View>
       </ImageBackground>
@@ -287,7 +304,7 @@ class Articles extends Component {
             showsHorizontalScrollIndicator={false}
             snapToAlignment="center"
             data={this.props.isanpanblo}
-            onScroll-{Animated.event}
+            onScroll={Animated.event}
             keyExtractor={(item, index) => `$(item.id)`}
             renderItem={({item}) => this.renderRecommendation(item)}
           />
