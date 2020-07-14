@@ -8,87 +8,28 @@ import {
   ImageBackground,
   FlatList,
   Image,
-  Animated
+  Animated,
+  Thumbnail,
 } from 'react-native';
 
+import * as theme from '../theme';
 
-import * as theme from '../theme'
-import icon from '../assets/new_icon.png';
-import img1 from '../assets/slider3.jpg';
-import logo2 from '../assets/package.png';
 import {ScrollView} from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons';
+
+import Icon from 'react-native-vector-icons/Feather';
+//local data
+import {home} from '../localdata/datahome';
+import {iSanPablo} from '../localdata/dataiSanPablo';
+import ViewMoreText from 'react-native-view-more-text';
+
+import {
+  Row,
+  Column as Col,
+  Grid,
+  setBreakPoints,
+} from 'react-native-responsive-grid';
 const {width, height} = Dimensions.get('screen');
-
-const home = [
-  {
-    id: 1,
-    user: {
-      name: 'Christian Velasco',
-      avatar: img1,
-    },
-    location: 'Brgy. IV-A, San Pablo City',
-    title: 'Sampaloc Lake',
-    previewDescription: 'Lorem Ispum noelasdsd asdsdlka',
-    previewImage: img1,
-  },
-  {
-    id: 2,
-    user: {
-      name: 'Christian Velasco',
-      avatar: img1,
-    },
-    location: 'Brgy. IV-A, San Pablo City',
-    title: 'Sampaloc Lake',
-    previewDescription: 'Lorem Ispum noelasdsd asdsdlka',
-    previewImage: img1,
-  },
-  {
-    id: 3,
-    user: {
-      name: 'Christian Velasco',
-      avatar: img1,
-    },
-    location: 'Brgy. IV-A, San Pablo City',
-    title: 'Sampaloc Lake',
-    previewDescription: 'Lorem Ispum noelasdsd asdsdlka',
-    previewImage: img1,
-  },
-];
-const iSanPablo = [
-  {
-    id: 1,
-    previewImage: logo2,
-    previevTitle: 'Business in the City',
-  },
-  {
-    id: 2,
-    previewImage: logo2,
-    previevTitle: 'My Taxes',
-  },
-  {
-    id: 3,
-    previewImage: logo2,
-    previevTitle: 'My App Online Request',
-  },
-
-  {
-    id: 4,
-    previewImage: logo2,
-    previevTitle: 'City Hotlines',
-  },
-
-  {
-    id: 5,
-    previewImage: logo2,
-    previevTitle: 'Government Online Services',
-  },
-  {
-    id: 6,
-    previewImage: logo2,
-    previevTitle: 'City Employee Corner',
-  },
-];
+const height_logo = width * 0.7 * 1.2;
 
 const styles = StyleSheet.create({
   flex: {
@@ -148,14 +89,8 @@ const styles = StyleSheet.create({
   icon: {
     width: 33,
     height: 33,
- 
   },
-  // destinationInfo: {
-  //   padding: 24,
-  //   position: 'absolute',
-  //   borderRadius: 12,
-  //   backgroundColor: theme.colors.white,
-  // },
+
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
@@ -179,6 +114,52 @@ const styles = StyleSheet.create({
   activeDot: {
     borderColor: '#007BFA',
   },
+
+  card: {
+    marginTop: 30,
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: '#f5f3f2',
+    marginBottom: 10,
+    marginLeft: 5,
+    marginRight: 5,
+    width: height_logo,
+    shadowColor: '#000',
+    shadowOpacity: 1,
+    shadowRadius: 3,
+    elevation: 5,
+    // shadowOffset: {
+    //   width: 1,
+    //   height: 3,
+    // },
+  },
+  titleNews: {
+    fontSize: 20,
+    margin: 1,
+    marginBottom: 10,
+    fontWeight: 'bold',
+    color: '#082f9c',
+  },
+  cardImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+  },
+  name: {
+    fontSize: 18,
+
+    marginStart: 5,
+    fontWeight: '200',
+    color: '#082f9c',
+  },
+  namedesc: {
+    fontSize: 16,
+
+    marginStart: 5,
+    fontWeight: '200',
+    color: '#92949c',
+  },
+  //End of News
 });
 
 class Articles extends Component {
@@ -191,51 +172,31 @@ class Articles extends Component {
           styles.row,
           styles.header,
           {
+            paddingTop: 10,
             justifyContent: 'space-between',
             alignContent: 'center',
           },
         ]}>
         <View>
-          <Text style={{ color: theme.colors.caption}}>Republic of the Philippines</Text>
+          <Text style={{color: theme.colors.caption}}>
+            Republic of the Philippines
+          </Text>
           <Text style={{fontSize: 20}}>City Government of San Pablo</Text>
         </View>
         <View>
-          {/* <Image source={icon} style={[styles.icon]} /> */}
-          <Icon size={24} color="blue" name="menu" type="Feather" />
-          <Text />
+          <Icon
+            name="menu"
+            size={23}
+            type="Feather"
+            color="grey"
+            style={{marginTop: 10}}
+          />
         </View>
       </View>
     ),
   };
 
-  renderDots() {
-    const {destinations} = this.props;
-    const dotPosition = Animated.divide(this.scrollX, width)
-
-    return (
-      <View
-        style={[
-          styles.flex,
-          styles.row,
-          {justifyContent: 'center', marginTop: 10},
-        ]}>
-        {destinations.map((item, index) => {
-          const opacity = dotPosition.interpolate ({
-            inputRange: [index -1, index, index + 1],
-            outputRange: [0, 2, 0],
-            extrapolate: 'clamp'
-          })
-          return (
-            <Animated.View
-              key={`step-${item.id}`}
-              style={[styles.dots, styles.activeDot, {  borderWidth: opacity} ]}
-            />
-          );
-        })}
-      </View>
-    );
-  }
-
+  //Banner
   renderDestinations = () => {
     return (
       <View style={[styles.column, styles.destinations, styles.shadow]}>
@@ -248,7 +209,9 @@ class Articles extends Component {
           showsHorizontalScrollIndicator={false}
           snapToAlignment="center"
           data={this.props.destinations}
-          onScroll={Animated.event([{nativeEvent: {contentOffset: {x: this.scrollX}}}])}
+          onScroll={Animated.event([
+            {nativeEvent: {contentOffset: {x: this.scrollX}}},
+          ])}
           keyExtractor={(item, index) => `$(item.id)`}
           renderItem={({item}) => this.renderDestination(item)}
         />
@@ -257,7 +220,7 @@ class Articles extends Component {
     );
   };
 
-  renderDestination = (item) => {
+  renderDestination = item => {
     return (
       <ImageBackground
         style={[styles.flex, styles.destination]}
@@ -278,6 +241,36 @@ class Articles extends Component {
     );
   };
 
+  renderDots() {
+    const {destinations} = this.props;
+    const dotPosition = Animated.divide(this.scrollX, width);
+
+    return (
+      <View
+        style={[
+          styles.flex,
+          styles.row,
+          {justifyContent: 'center', marginTop: 10},
+        ]}>
+        {destinations.map((item, index) => {
+          const opacity = dotPosition.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [0, 2, 0],
+            extrapolate: 'clamp',
+          });
+          return (
+            <Animated.View
+              key={`step-${item.id}`}
+              style={[styles.dots, styles.activeDot, {borderWidth: opacity}]}
+            />
+          );
+        })}
+      </View>
+    );
+  }
+  //End of Banner
+
+  //iSanPablo
   renderRecommended = () => {
     return (
       <View style={[styles.flex, styles.column, styles.recommended]}>
@@ -313,7 +306,7 @@ class Articles extends Component {
     );
   };
 
-  renderRecommendation = (item) => {
+  renderRecommendation = item => {
     return (
       <View
         style={[
@@ -365,7 +358,40 @@ class Articles extends Component {
       </View>
     );
   };
+  //End of iSanPablo
 
+  //News
+  renderNews() {
+    let listdata = this.state.newlists.map((item, i) => {
+      return (
+        <Col smSize={25} mdSize={25} lgSize={25}>
+          <View style={styles.card}>
+            <Text style={styles.titleNews}>{item.title}</Text>
+            <Image source={item.image} style={styles.cardImage} />
+            <View style={{flexDirection: 'row', padding: 10}}>
+              <Thumbnail source={item.thumb} style={{height: 43, width: 43}} />
+              {/* News Claimer */}
+              <View style={{flexDirection: 'column'}}>
+                <Text style={styles.name}>{item.officeUploader}</Text>
+                <Text style={styles.namedesc}>{item.nameUploader}</Text>
+              </View>
+            </View>
+            {/* News Description */}
+            <View
+              style={{flexDirection: 'row', paddingLeft: 10, paddingRight: 10}}>
+              <ViewMoreText
+                numberOfLines={2}
+                renderViewMore={this.renderViewMore}
+                renderViewLess={this.renderViewLess}>
+                <Text style={{color: 'grey'}}>{item.description}</Text>
+              </ViewMoreText>
+            </View>
+            {/* News Description */}
+          </View>
+        </Col>
+      );
+    });
+  }
   render() {
     return (
       <ScrollView
