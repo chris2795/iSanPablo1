@@ -9,18 +9,22 @@ import {
   FlatList,
   Image,
   Animated,
-  Thumbnail,
 } from 'react-native';
+
+import {Thumbnail} from 'native-base';
 
 import * as theme from '../theme';
 
 import {ScrollView} from 'react-native-gesture-handler';
 
 import Icon from 'react-native-vector-icons/Feather';
+
+import ViewMoreText from 'react-native-view-more-text';
+
 //local data
 import {home} from '../localdata/datahome';
 import {iSanPablo} from '../localdata/dataiSanPablo';
-import ViewMoreText from 'react-native-view-more-text';
+import {news} from '../localdata/datanews';
 
 import {
   Row,
@@ -28,6 +32,7 @@ import {
   Grid,
   setBreakPoints,
 } from 'react-native-responsive-grid';
+
 const {width, height} = Dimensions.get('screen');
 const height_logo = width * 0.7 * 1.2;
 
@@ -115,6 +120,7 @@ const styles = StyleSheet.create({
     borderColor: '#007BFA',
   },
 
+  // style News
   card: {
     marginTop: 30,
     borderRadius: 10,
@@ -154,12 +160,11 @@ const styles = StyleSheet.create({
   },
   namedesc: {
     fontSize: 16,
-
     marginStart: 5,
     fontWeight: '200',
     color: '#92949c',
   },
-  //End of News
+  //style End of News
 });
 
 class Articles extends Component {
@@ -361,37 +366,59 @@ class Articles extends Component {
   //End of iSanPablo
 
   //News
-  renderNews() {
-    let listdata = this.state.newlists.map((item, i) => {
-      return (
-        <Col smSize={25} mdSize={25} lgSize={25}>
-          <View style={styles.card}>
-            <Text style={styles.titleNews}>{item.title}</Text>
-            <Image source={item.image} style={styles.cardImage} />
-            <View style={{flexDirection: 'row', padding: 10}}>
-              <Thumbnail source={item.thumb} style={{height: 43, width: 43}} />
-              {/* News Claimer */}
-              <View style={{flexDirection: 'column'}}>
-                <Text style={styles.name}>{item.officeUploader}</Text>
-                <Text style={styles.namedesc}>{item.nameUploader}</Text>
-              </View>
-            </View>
-            {/* News Description */}
-            <View
-              style={{flexDirection: 'row', paddingLeft: 10, paddingRight: 10}}>
-              <ViewMoreText
-                numberOfLines={2}
-                renderViewMore={this.renderViewMore}
-                renderViewLess={this.renderViewLess}>
-                <Text style={{color: 'grey'}}>{item.description}</Text>
-              </ViewMoreText>
-            </View>
-            {/* News Description */}
+  renderNews = () => {
+    return (
+      <View style={[styles.flex, styles.column, styles.recommended]}>
+        <View
+          style={[
+            styles.row,
+            {
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              marginBottom: 10,
+              marginTop: 20,
+            },
+          ]}>
+          <Text style={{fontSize: 24}}>News and Announcement</Text>
+          {/* <Text style={{color: '#BCCCD4'}}>More</Text> */}
+        </View>
+        <View style={[styles.column]}>
+          <FlatList
+            horizontal
+            pagingEnabled
+            scrollEnabled
+            decelerationRate={0}
+            scrollEventThrottle={16}
+            showsHorizontalScrollIndicator={false}
+            snapToAlignment="center"
+            data={this.props.News}
+            onScroll={Animated.event}
+            keyExtractor={(item, index) => `$(item.id)`}
+            renderItem={({item}) => this.renderNewsInformation(item)}
+          />
+        </View>
+      </View>
+    );
+  };
+
+  renderNewsInformation = item => {
+    return (
+      <View style={styles.card}>
+        <Text style={styles.titleNews}>{item.title}</Text>
+        <Image source={item.image} style={styles.cardImage} />
+        <View style={{flexDirection: 'row', padding: 10}}>
+          <Thumbnail source={item.thumb} style={{height: 43, width: 43}} />
+          {/* News Claimer */}
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.name}>{item.officeUploader}</Text>
+            <Text style={styles.namedesc}>{item.nameUploader}</Text>
           </View>
-        </Col>
-      );
-    });
-  }
+        </View>
+      </View>
+    );
+  };
+  //End of News
+
   render() {
     return (
       <ScrollView
@@ -399,7 +426,7 @@ class Articles extends Component {
         <StatusBar backgroundColor="#FFFF" barStyle="dark-content" />
         <View style={[styles.flex, styles.column]}>
           {this.renderDestinations()}
-          {this.renderRecommended()}
+          {this.renderNews()}
           {this.renderRecommended()}
         </View>
       </ScrollView>
@@ -409,6 +436,7 @@ class Articles extends Component {
 Articles.defaultProps = {
   destinations: home,
   isanpanblo: iSanPablo,
+  News: news,
 };
 
 export default Articles;
