@@ -122,10 +122,10 @@ const styles = StyleSheet.create({
 
   // style News
   card: {
-    marginTop: 30,
+    marginTop: 10,
     borderRadius: 10,
     padding: 10,
-    backgroundColor: '#f5f3f2',
+    backgroundColor: '#FFF',
     marginBottom: 10,
     marginLeft: 5,
     marginRight: 5,
@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 3,
     elevation: 5,
+
     // shadowOffset: {
     //   width: 1,
     //   height: 3,
@@ -143,8 +144,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 1,
     marginBottom: 10,
-    fontWeight: 'bold',
-    color: '#082f9c',
+    fontWeight: '400',
+    color: '#2f3030',
   },
   cardImage: {
     width: '100%',
@@ -177,7 +178,7 @@ class Articles extends Component {
           styles.row,
           styles.header,
           {
-            paddingTop: 10,
+            paddingTop: 15,
             justifyContent: 'space-between',
             alignContent: 'center',
           },
@@ -186,7 +187,9 @@ class Articles extends Component {
           <Text style={{color: theme.colors.caption}}>
             Republic of the Philippines
           </Text>
-          <Text style={{fontSize: 20}}>City Government of San Pablo</Text>
+          <Text style={{fontSize: 20, color: '#1b1c1c'}}>
+            City Government of San Pablo
+          </Text>
         </View>
         <View>
           <Icon
@@ -286,10 +289,12 @@ class Articles extends Component {
               justifyContent: 'space-between',
               alignItems: 'flex-end',
               marginBottom: 10,
-              marginTop: 20,
+              marginTop: 15,
             },
           ]}>
-          <Text style={{fontSize: 24}}>My iSanPablo</Text>
+          <Text style={{fontSize: 25, color: '#1b1c1c', fontWeight: '400'}}>
+            My iSanPablo
+          </Text>
           {/* <Text style={{color: '#BCCCD4'}}>More</Text> */}
         </View>
         <View style={[styles.column]}>
@@ -376,10 +381,12 @@ class Articles extends Component {
               justifyContent: 'space-between',
               alignItems: 'flex-end',
               marginBottom: 10,
-              marginTop: 20,
+              marginTop: 15,
             },
           ]}>
-          <Text style={{fontSize: 24}}>News and Announcement</Text>
+          <Text style={{fontSize: 25, color: '#1b1c1c', fontWeight: '400'}}>
+            News and Announcement
+          </Text>
           {/* <Text style={{color: '#BCCCD4'}}>More</Text> */}
         </View>
         <View style={[styles.column]}>
@@ -414,9 +421,17 @@ class Articles extends Component {
             <Text style={styles.namedesc}>{item.nameUploader}</Text>
           </View>
         </View>
+        <View style={{flexDirection: 'row', paddingLeft: 10, paddingRight: 10}}>
+          <ViewMoreText
+            numberOfLines={2}
+            renderViewMore={this.renderViewMore}
+            renderViewLess={this.renderViewLess}>
+            <Text style={{color: 'grey'}}>{item.description}</Text>
+          </ViewMoreText>
+        </View>
       </View>
     );
-  };
+  };ghg
   //End of News
 
   render() {
@@ -428,6 +443,8 @@ class Articles extends Component {
           {this.renderDestinations()}
           {this.renderNews()}
           {this.renderRecommended()}
+  
+ 
         </View>
       </ScrollView>
     );
