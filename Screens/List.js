@@ -26,6 +26,8 @@ import {home} from '../localdata/datahome';
 import {iSanPablo} from '../localdata/dataiSanPablo';
 import {news} from '../localdata/datanews';
 
+import {LinearTextGradient} from 'react-native-text-gradient';
+
 import {
   Row,
   Column as Col,
@@ -49,8 +51,8 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#FFF',
     paddingHorizontal: 20,
-    paddingBottom: 60,
-    paddingTop: 20,
+    paddingBottom: 50,
+    paddingTop: 45,
   },
 
   destination: {
@@ -87,10 +89,19 @@ const styles = StyleSheet.create({
     height: (width - 36 * 2) / 2,
   },
   avatar: {
-    width: 33,
-    height: 33,
+    width: 35,
+    height: 35,
     borderRadius: 18,
   },
+  outerCircle: {
+    backgroundColor: '#0ed2e8',
+    width: 40,
+    height: 40,
+    borderRadius: 50 / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   icon: {
     width: 33,
     height: 33,
@@ -178,27 +189,43 @@ class Articles extends Component {
           styles.row,
           styles.header,
           {
-            paddingTop: 15,
             justifyContent: 'space-between',
             alignContent: 'center',
           },
         ]}>
         <View>
-          <Text style={{color: theme.colors.caption}}>
-            Republic of the Philippines
-          </Text>
-          <Text style={{fontSize: 20, color: '#1b1c1c'}}>
-            City Government of San Pablo
-          </Text>
+          <LinearTextGradient
+            style={{fontWeight: 'bold', fontSize: 30}}
+            locations={[0, 1]}
+            colors={['#2acadb', '#257bf5']}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}>
+            <Text>iSanPablo</Text>
+          </LinearTextGradient>
         </View>
-        <View>
-          <Icon
-            name="menu"
-            size={23}
-            type="Feather"
-            color="grey"
-            style={{marginTop: 10}}
-          />
+        <View style={[styles.row]}>
+          <View style={[styles.outerCircle]}>
+            <Image
+              source={require('../assets/profile.png')}
+              style={[styles.avatar, {alignSelf: 'center'}]}
+            />
+          </View>
+          <View
+            style={{
+        
+              height: 40,
+          
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Icon
+              name="menu"
+              size={25}
+              type="Feather"
+              color="grey"
+              style={{alignSelf: 'center'}}
+            />
+          </View>
         </View>
       </View>
     ),
@@ -381,11 +408,10 @@ class Articles extends Component {
               justifyContent: 'space-between',
               alignItems: 'flex-end',
               marginBottom: 10,
-              marginTop: 15,
             },
           ]}>
-          <Text style={{fontSize: 25, color: '#1b1c1c', fontWeight: '400'}}>
-            News and Announcement
+          <Text style={{fontSize: 40, color: '#1b1c1c', fontWeight: '400'}}>
+            Latest News
           </Text>
           {/* <Text style={{color: '#BCCCD4'}}>More</Text> */}
         </View>
@@ -431,22 +457,24 @@ class Articles extends Component {
         </View>
       </View>
     );
-  };ghg
+  };
+  ghg;
   //End of News
 
   render() {
     return (
-      <ScrollView
-        style={[styles.flex, styles.column, {backgroundColor: '#FFFF'}]}>
-        <StatusBar backgroundColor="#FFFF" barStyle="dark-content" />
-        <View style={[styles.flex, styles.column]}>
-          {this.renderDestinations()}
-          {this.renderNews()}
-          {this.renderRecommended()}
-  
- 
-        </View>
-      </ScrollView>
+      <>
+        <StatusBar backgroundColor="transparent" translucent={true} />
+        <ScrollView
+          style={[styles.flex, styles.column, {backgroundColor: '#FFFF'}]}>
+          <StatusBar backgroundColor="#FFFF" barStyle="dark-content" />
+          <View style={[styles.flex, styles.column]}>
+            {/* {this.renderDestinations()} */}
+            {this.renderNews()}
+            {this.renderRecommended()}
+          </View>
+        </ScrollView>
+      </>
     );
   }
 }
