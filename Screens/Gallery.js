@@ -51,21 +51,19 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#FFF',
     paddingHorizontal: 20,
-    paddingBottom: 55,
-    paddingTop: 50,
+    paddingBottom: 50,
+    paddingTop: 45,
   },
 
   destination: {
-    backgroundColor: '#FFF',
-    shadowColor: '#000',
-    shadowOpacity: 1,
-    shadowRadius: 3,
-    elevation: 5,
-    width: width - 18 * 2,
+    backgroundColor: 'red',
+    width: width - 22 * 2,
+    height: width - 22 * 2,
     borderRadius: 12,
-    marginHorizontal: 18,
-    marginVertical: 5,
-    padding: 5,
+    marginHorizontal: 22,
+    paddingHorizontal: 22,
+    paddingVertical: 24,
+    padding: 22,
   },
   destinations: {
     justifyContent: 'space-between',
@@ -238,7 +236,7 @@ class Articles extends Component {
   };
 
   //Banner
-  renderNews = () => {
+  renderDestinations = () => {
     return (
       <View style={[styles.column, styles.destinations, styles.shadow]}>
         <FlatList
@@ -249,44 +247,41 @@ class Articles extends Component {
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
           snapToAlignment="center"
-          data={this.props.News}
+          data={this.props.destinations}
           onScroll={Animated.event([
             {nativeEvent: {contentOffset: {x: this.scrollX}}},
           ])}
           keyExtractor={(item, index) => `$(item.id)`}
-          renderItem={({item}) => this.renderNewsInformation(item)}
+          renderItem={({item}) => this.renderDestination(item)}
         />
         {this.renderDots()}
       </View>
     );
   };
 
-  renderNewsInformation = item => {
+  renderDestination = item => {
     return (
-      <View style={(styles.flex, styles.destination)}>
-        <Text style={styles.titleNews}>{item.title}</Text>
-        <Image source={item.image} style={styles.cardImage} />
-        <View style={{flexDirection: 'row', padding: 10}}>
-          <Thumbnail source={item.thumb} style={{height: 43, width: 43}} />
-          {/* News Claimer */}
-          <View style={{flexDirection: 'column'}}>
-            <Text style={styles.name}>{item.officeUploader}</Text>
-            <Text style={styles.namedesc}>{item.nameUploader}</Text>
+      <ImageBackground
+        style={[styles.flex, styles.destination]}
+        imageStyle={{borderRadius: 12}}
+        source={item.previewImage}>
+        <View style={[styles.row]}>
+          <View style={{flex: 0, alignSelf: 'center'}}>
+            <Image source={item.user.avatar} style={[styles.avatar]} />
+          </View>
+          <View style={[styles.column, {flex: 2, paddingHorizontal: 18}]}>
+            <Text style={{color: theme.colors.white, fontWeight: 'bold'}}>
+              {item.title}
+            </Text>
+            <Text style={{color: theme.colors.white}}>{item.location}</Text>
           </View>
         </View>
-        <View style={{flexDirection: 'row', paddingLeft: 10, paddingRight: 10}}>
-          <ViewMoreText
-            numberOfLines={2}
-            renderViewMore={this.renderViewMore}
-            renderViewLess={this.renderViewLess}>
-            <Text style={{color: 'grey'}}>{item.description}</Text>
-          </ViewMoreText>
-        </View>
-      </View>
+      </ImageBackground>
     );
   };
+
   renderDots() {
-    const {News} = this.props;
+    const {destinations} = this.props;
     const dotPosition = Animated.divide(this.scrollX, width);
 
     return (
@@ -296,7 +291,7 @@ class Articles extends Component {
           styles.row,
           {justifyContent: 'center', marginTop: 10},
         ]}>
-        {News.map((item, index) => {
+        {destinations.map((item, index) => {
           const opacity = dotPosition.interpolate({
             inputRange: [index - 1, index, index + 1],
             outputRange: [0, 2, 0],
@@ -328,8 +323,10 @@ class Articles extends Component {
               marginTop: 15,
             },
           ]}>
-          <Text style={{fontSize: 30, color: '#2180a3'}}>My iSanPablo</Text>
-          <Text style={{color: '#BCCCD4'}}>Swipe></Text>
+          <Text style={{fontSize: 40, color: '#1b1c1c', fontWeight: '400'}}>
+            My iSanPablo
+          </Text>
+          {/* <Text style={{color: '#BCCCD4'}}>More</Text> */}
         </View>
         <View style={[styles.column]}>
           <FlatList
@@ -369,7 +366,7 @@ class Articles extends Component {
             imageStyle={{
               // borderTopRightRadius: 12,
               // borderTopLeftRadius: 12,
-              margin: 5,
+              margin: 10,
               // width: (width - 36* 2) / 2,
               // height: (width - 36 * 2) / 2,
             }}
@@ -404,6 +401,69 @@ class Articles extends Component {
   };
   //End of iSanPablo
 
+  //News
+  renderNews = () => {
+    return (
+      <View style={[styles.flex, styles.column, styles.recommended]}>
+        <View
+          style={[
+            styles.row,
+            {
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              marginBottom: 10,
+            },
+          ]}>
+          <Text style={{fontSize: 40, color: '#1b1c1c', fontWeight: '400'}}>
+            Latest News
+          </Text>
+          {/* <Text style={{color: '#BCCCD4'}}>More</Text> */}
+        </View>
+        <View style={[styles.column]}>
+          <FlatList
+            horizontal
+            pagingEnabled
+            scrollEnabled
+            decelerationRate={0}
+            scrollEventThrottle={16}
+            showsHorizontalScrollIndicator={false}
+            snapToAlignment="center"
+            data={this.props.News}
+            onScroll={Animated.event}
+            keyExtractor={(item, index) => `$(item.id)`}
+            renderItem={({item}) => this.renderNewsInformation(item)}
+          />
+        </View>
+      </View>
+    );
+  };
+ 
+  renderNewsInformation = item => {
+    return (
+      <View style={styles.card}>
+        <Text style={styles.titleNews}>{item.title}</Text>
+        <Image source={item.image} style={styles.cardImage} />
+        <View style={{flexDirection: 'row', padding: 10}}>
+          <Thumbnail source={item.thumb} style={{height: 43, width: 43}} />
+          {/* News Claimer */}
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.name}>{item.officeUploader}</Text>
+            <Text style={styles.namedesc}>{item.nameUploader}</Text>
+          </View>
+        </View>
+        <View style={{flexDirection: 'row', paddingLeft: 10, paddingRight: 10}}>
+          <ViewMoreText
+            numberOfLines={2}
+            renderViewMore={this.renderViewMore}
+            renderViewLess={this.renderViewLess}>
+            <Text style={{color: 'grey'}}>{item.description}</Text>
+          </ViewMoreText>
+        </View>
+      </View>
+    );
+  };
+
+  //End of News
 
   render() {
     return (
@@ -413,6 +473,7 @@ class Articles extends Component {
           style={[styles.flex, styles.column, {backgroundColor: '#FFFF'}]}>
           <StatusBar backgroundColor="#FFFF" barStyle="dark-content" />
           <View style={[styles.flex, styles.column]}>
+            {this.renderDestinations()}
             {this.renderNews()}
             {this.renderRecommended()}
             {/* {this.renderJob()} */}
@@ -424,7 +485,7 @@ class Articles extends Component {
 }
 Articles.defaultProps = {
   destinations: home,
-  isanpanblo: iSanPablo,  
+  isanpanblo: iSanPablo,
   News: news,
 };
 
