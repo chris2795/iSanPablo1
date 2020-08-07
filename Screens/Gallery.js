@@ -437,7 +437,6 @@ class Articles extends Component {
       </View>
     );
   };
- 
   renderNewsInformation = item => {
     return (
       <View style={styles.card}>
